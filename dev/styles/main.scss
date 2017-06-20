@@ -29,7 +29,8 @@ main {
 }  
 
 h1 {
-  font-family: $headingFont;
+  font-family: $bodyFont;
+  letter-spacing: 2px;
   font-size: 5rem;
   text-shadow: 1px 1px 1px $magentaColor;
   color: $purpleColor;

@@ -25,6 +25,7 @@ bikeApp.userDestinationLatLong =[];
 //initialize function
 bikeApp.init = function() {
 	bikeApp.getCityBikes();
+	bikeApp.videoBackground();
 	bikeApp.userTime();
 	bikeApp.getLocations();
 	bikeApp.getUserInput();
@@ -77,26 +78,26 @@ bikeApp.getStationInfo = function() {
 //auto completes location using geocode and stores it to userOrigin/Destination
 bikeApp.getLocations = function(){
 	 var userOrigin = new google.maps.places.Autocomplete(
-	 		(document.getElementById('origin-input')),
-      {types: ['geocode']});
+			(document.getElementById('origin-input')),
+	  {types: ['geocode']});
 	 var userDesination = new google.maps.places.Autocomplete(
-	 		(document.getElementById('destination-input')),
-      {types: ['geocode']});
+			(document.getElementById('destination-input')),
+	  {types: ['geocode']});
 }
 
 // setting callback functions for user  origin lat long values
 bikeApp.setUserOriginLatLong = function(result) {
 	bikeApp.userOriginLatLong = [ 
-    	result.geometry.location.lat(), 
-    	result.geometry.location.lng()]
-    bikeApp.compareDistances();
+		result.geometry.location.lat(), 
+		result.geometry.location.lng()]
+	bikeApp.compareDistances();
 }
 // setting callback functions for user  destination lat long values
 bikeApp.setUserDestinationLatLong = function(result) {
-    bikeApp.userDestinationLatLong = [ 
-    	result.geometry.location.lat(), 
-    	result.geometry.location.lng()]
-    bikeApp.compareDistances();
+	bikeApp.userDestinationLatLong = [ 
+		result.geometry.location.lat(), 
+		result.geometry.location.lng()]
+	bikeApp.compareDistances();
 }
 
 // compare distances with city bikes api and user lat long
@@ -200,39 +201,39 @@ bikeApp.getUserLatLong = function (callback, address){
 bikeApp.getDistanceDuration = function(stationOrigin, stationDestination) {
 	var distanceService = new google.maps.DistanceMatrixService();
 	distanceService.getDistanceMatrix({
-	    origins: [stationOrigin],
-	    destinations: [stationDestination],
-	    travelMode: google.maps.TravelMode.BICYCLING,
-	    unitSystem: google.maps.UnitSystem.METRIC,
-	    durationInTraffic: true
+		origins: [stationOrigin],
+		destinations: [stationDestination],
+		travelMode: google.maps.TravelMode.BICYCLING,
+		unitSystem: google.maps.UnitSystem.METRIC,
+		durationInTraffic: true
 	},
 	function (response, status) {
-	    if (status !== google.maps.DistanceMatrixStatus.OK) {
-	        console.log('Error:', status);
-	    } else {
-	    	bikeApp.stationTravelTime = response.rows[0].elements[0].duration.value; //receiving travel time in seconds
-	    	bikeApp.getDistanceDurationRoundTrip(bikeApp.shortestDistanceOriginLatLong, bikeApp.destinationLatLong);
-	    }
+		if (status !== google.maps.DistanceMatrixStatus.OK) {
+			console.log('Error:', status);
+		} else {
+			bikeApp.stationTravelTime = response.rows[0].elements[0].duration.value; //receiving travel time in seconds
+			bikeApp.getDistanceDurationRoundTrip(bikeApp.shortestDistanceOriginLatLong, bikeApp.destinationLatLong);
+		}
 	});
 }
 //seperae distance matric service to calculate roundtrip if no destination station available
 bikeApp.getDistanceDurationRoundTrip = function(stationOrigin, userDestination) {
 	var distanceService = new google.maps.DistanceMatrixService();
 	distanceService.getDistanceMatrix({
-	    origins: [stationOrigin],
-	    destinations: [userDestination],
-	    travelMode: google.maps.TravelMode.BICYCLING,
-	    unitSystem: google.maps.UnitSystem.METRIC,
-	    durationInTraffic: true
+		origins: [stationOrigin],
+		destinations: [userDestination],
+		travelMode: google.maps.TravelMode.BICYCLING,
+		unitSystem: google.maps.UnitSystem.METRIC,
+		durationInTraffic: true
 
 	},
 	function (response, status) {
-	    if (status !== google.maps.DistanceMatrixStatus.OK) {
-	        console.log('Error:', status);
-	    } else {
-	    	const roundTripTravelTime = Math.floor(((response.rows[0].elements[0].duration.value) / 60) * 2); //converting roundtrip travel time to minutes ( * 2 as it is a round trip)
-	    	bikeApp.travelTimeDifference(bikeApp.time, bikeApp.stationTravelTime, roundTripTravelTime);
-	    }
+		if (status !== google.maps.DistanceMatrixStatus.OK) {
+			console.log('Error:', status);
+		} else {
+			const roundTripTravelTime = Math.floor(((response.rows[0].elements[0].duration.value) / 60) * 2); //converting roundtrip travel time to minutes ( * 2 as it is a round trip)
+			bikeApp.travelTimeDifference(bikeApp.time, bikeApp.stationTravelTime, roundTripTravelTime);
+		}
 	});
 }
 
@@ -317,14 +318,14 @@ var initMap = function() {
 //custom Map Markers + info windows on "click"
 bikeApp.placeMarkers = function(origin, destination, distanceDestination) {
 
-    var infowindowOrigin = new google.maps.InfoWindow({
-          content: origin
-    });
+	var infowindowOrigin = new google.maps.InfoWindow({
+		  content: origin
+	});
 
-    var infowindowDestination = new google.maps.InfoWindow({
-          content: destination
-    });
-    //custom marker info
+	var infowindowDestination = new google.maps.InfoWindow({
+		  content: destination
+	});
+	//custom marker info
 	var customIcon = {
 		url: './public/assets/images/citybike-marker.svg',
 		size: new google.maps.Size(50, 70),
@@ -332,93 +333,88 @@ bikeApp.placeMarkers = function(origin, destination, distanceDestination) {
 		scaledSize: new google.maps.Size(50, 70)
 	};
 	var markerOrigin = new google.maps.Marker({
-	    position: bikeApp.shortestDistanceOriginLatLong,
-	    map: map,
-	    title: 'origin marker',
-	    icon: customIcon
+		position: bikeApp.shortestDistanceOriginLatLong,
+		map: map,
+		title: 'origin marker',
+		icon: customIcon
 	});
 
 	markerOrigin.addListener('click', function() {
-          infowindowOrigin.open(map, markerOrigin);
-    });
+		  infowindowOrigin.open(map, markerOrigin);
+	});
 	//marker info if user is doing roundtrip
 	if (distanceDestination < 2) {
 		var markerDestination = new google.maps.Marker({
-		    position: bikeApp.shortestDistanceDestinationLatLong,
-		    map: map,
-		    title: 'destination marker',
-		    icon: customIcon
+			position: bikeApp.shortestDistanceDestinationLatLong,
+			map: map,
+			title: 'destination marker',
+			icon: customIcon
 		});
 
 		markerDestination.addListener('click', function() {
-	          infowindowDestination.open(map, markerDestination);
-	    });
+			  infowindowDestination.open(map, markerDestination);
+		});
 	}
 }
 
 //background video JS
 
-function scaleVideoContainer() {
-
-    var height = $(window).height() + 5;
-    var unitHeight = parseInt(height) + 'px';
-    $('.homepage-hero-module').css('height',unitHeight);
-
+bikeApp.videoBackground = function() {
+	bikeApp.scaleVideoContainer();
+	bikeApp.initBannerVideoSize('.video-container .poster img');
+	bikeApp.initBannerVideoSize('.video-container .filter');
+	bikeApp.initBannerVideoSize('.video-container video');
+	$(window).on('resize', function() {
+		bikeApp.scaleVideoContainer();
+		bikeApp.scaleBannerVideoSize('.video-container .poster img');
+		bikeApp.scaleBannerVideoSize('.video-container .filter');
+		bikeApp.scaleBannerVideoSize('.video-container video');
+	});
 }
 
-function initBannerVideoSize(element){
-
-    $(element).each(function(){
-        $(this).data('height', $(this).height());
-        $(this).data('width', $(this).width());
-    });
-
-    scaleBannerVideoSize(element);
-
+bikeApp.scaleVideoContainer = function() {
+	var height = $(window).height() + 5;
+	var unitHeight = parseInt(height) + 'px';
+	$('.homepage-hero-module').css('height',unitHeight);
 }
 
-function scaleBannerVideoSize(element){
+bikeApp.initBannerVideoSize = function (element){
 
-    var windowWidth = $(window).width(),
-    windowHeight = $(window).height() + 5,
-    videoWidth,
-    videoHeight;
+	$(element).each(function(){
+		$(this).data('height', $(this).height());
+		$(this).data('width', $(this).width());
+	});
 
+	bikeApp.scaleBannerVideoSize(element);
+}
 
-    $(element).each(function(){
-        var videoAspectRatio = $(this).data('height')/$(this).data('width');
+bikeApp.scaleBannerVideoSize = function(element){
+	var windowWidth = $(window).width(),
+	windowHeight = $(window).height() + 5,
+	videoWidth,
+	videoHeight;
 
-        $(this).width(windowWidth);
+	$(element).each(function(){
+		var videoAspectRatio = $(this).data('height')/$(this).data('width');
 
-        if(windowWidth < 1000){
-            videoHeight = windowHeight;
-            videoWidth = videoHeight / videoAspectRatio;
-            $(this).css({'margin-top' : 0, 'margin-left' : -(videoWidth - windowWidth) / 2 + 'px'});
+		$(this).width(windowWidth);
 
-            $(this).width(videoWidth).height(videoHeight);
-        } 
+		if (windowWidth < 1000){
+			videoHeight = windowHeight;
+			videoWidth = videoHeight / videoAspectRatio;
+			$(this).css({'margin-top' : 0, 'margin-left' : -(videoWidth - windowWidth) / 2 + 'px'});
 
-        $('.homepage-hero-module .video-container video').addClass('fadeIn animated');
+			$(this).width(videoWidth).height(videoHeight);
+		} 
 
-    });
+		$('.homepage-hero-module .video-container video').addClass('fadeIn animated');
+	});
 }
 
 
 //document ready
 $(function() {
 	bikeApp.init();
-	scaleVideoContainer();
-
-	initBannerVideoSize('.video-container .poster img');
-	initBannerVideoSize('.video-container .filter');
-	initBannerVideoSize('.video-container video');
-
-	$(window).on('resize', function() {
-	    scaleVideoContainer();
-	    scaleBannerVideoSize('.video-container .poster img');
-	    scaleBannerVideoSize('.video-container .filter');
-	    scaleBannerVideoSize('.video-container video');
-	});
 });
 
 

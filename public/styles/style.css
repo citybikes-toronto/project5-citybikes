@@ -212,7 +212,8 @@ main {
   z-index: 10; }
 
 h1 {
-  font-family: "Josefin Sans", sans-serif;
+  font-family: "Playfair Display", serif;
+  letter-spacing: 2px;
   font-size: 5rem;
   text-shadow: 1px 1px 1px #C02942;
   color: #542437;

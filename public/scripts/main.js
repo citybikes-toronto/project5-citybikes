@@ -27,6 +27,7 @@ bikeApp.userDestinationLatLong = [];
 //initialize function
 bikeApp.init = function () {
 	bikeApp.getCityBikes();
+	bikeApp.videoBackground();
 	bikeApp.userTime();
 	bikeApp.getLocations();
 	bikeApp.getUserInput();
@@ -342,25 +343,36 @@ bikeApp.placeMarkers = function (origin, destination, distanceDestination) {
 
 //background video JS
 
-function scaleVideoContainer() {
+bikeApp.videoBackground = function () {
+	bikeApp.scaleVideoContainer();
+	bikeApp.initBannerVideoSize('.video-container .poster img');
+	bikeApp.initBannerVideoSize('.video-container .filter');
+	bikeApp.initBannerVideoSize('.video-container video');
+	$(window).on('resize', function () {
+		bikeApp.scaleVideoContainer();
+		bikeApp.scaleBannerVideoSize('.video-container .poster img');
+		bikeApp.scaleBannerVideoSize('.video-container .filter');
+		bikeApp.scaleBannerVideoSize('.video-container video');
+	});
+};
 
+bikeApp.scaleVideoContainer = function () {
 	var height = $(window).height() + 5;
 	var unitHeight = parseInt(height) + 'px';
 	$('.homepage-hero-module').css('height', unitHeight);
-}
+};
 
-function initBannerVideoSize(element) {
+bikeApp.initBannerVideoSize = function (element) {
 
 	$(element).each(function () {
 		$(this).data('height', $(this).height());
 		$(this).data('width', $(this).width());
 	});
 
-	scaleBannerVideoSize(element);
-}
+	bikeApp.scaleBannerVideoSize(element);
+};
 
-function scaleBannerVideoSize(element) {
-
+bikeApp.scaleBannerVideoSize = function (element) {
 	var windowWidth = $(window).width(),
 	    windowHeight = $(window).height() + 5,
 	    videoWidth,
@@ -381,21 +393,9 @@ function scaleBannerVideoSize(element) {
 
 		$('.homepage-hero-module .video-container video').addClass('fadeIn animated');
 	});
-}
+};
 
 //document ready
 $(function () {
 	bikeApp.init();
-	scaleVideoContainer();
-
-	initBannerVideoSize('.video-container .poster img');
-	initBannerVideoSize('.video-container .filter');
-	initBannerVideoSize('.video-container video');
-
-	$(window).on('resize', function () {
-		scaleVideoContainer();
-		scaleBannerVideoSize('.video-container .poster img');
-		scaleBannerVideoSize('.video-container .filter');
-		scaleBannerVideoSize('.video-container video');
-	});
 });
