@@ -29,7 +29,8 @@ main {
 }  
 
 h1 {
-  font-family: $headingFont;
+  font-family: $bodyFont;
+  letter-spacing: 2px;
   font-size: 5rem;
   text-shadow: 1px 1px 1px $magentaColor;
   color: $purpleColor;
@@ -71,7 +72,7 @@ h1 {
   z-index: 500;
   position: relative;
   text-align: center;
-  margin: 0 auto;
+  width: 25%;
   // background-color: rgba(246, 246, 246, 0.35);
   border-radius: 20px;
   padding: 5px;
@@ -106,7 +107,7 @@ h1 {
   color: white;
   font-family: $headingFont;
   border-radius: 5px;
-  padding: 5px;
+  padding: 20px;
   p {
     margin: 0;
   }
@@ -129,7 +130,7 @@ h1 {
   font-family: $headingFont;
   border-radius: 5px;
   padding: 5px;
-  top: 275px;
+  top: 245px;
   p {
     margin: 5px;
   }
