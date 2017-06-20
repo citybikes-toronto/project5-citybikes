@@ -246,7 +246,7 @@ h1 {
   z-index: 500;
   position: relative;
   text-align: center;
-  margin: 0 auto;
+  width: 25%;
   border-radius: 20px;
   padding: 5px;
   padding-top: 0; }
@@ -271,7 +271,7 @@ h1 {
   color: white;
   font-family: "Josefin Sans", sans-serif;
   border-radius: 5px;
-  padding: 5px; }
+  padding: 20px; }
   .travelTime p, .priceContainer p, .roundTrip p {
     margin: 0; }
 
@@ -290,7 +290,7 @@ h1 {
   font-family: "Josefin Sans", sans-serif;
   border-radius: 5px;
   padding: 5px;
-  top: 275px; }
+  top: 245px; }
   .noStation p {
     margin: 5px; }
 
